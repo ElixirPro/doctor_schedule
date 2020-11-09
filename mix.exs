@@ -3,7 +3,6 @@ defmodule DoctorSchedule.MixProject do
 
   @github_url "https://github.com/ElixirPro/doctor_schedule.git"
 
-
   def project do
     [
       app: :doctor_schedule,
@@ -74,7 +73,7 @@ defmodule DoctorSchedule.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.8", only: :dev},
-      {:excoveralls, "~> 0.13.0", only: :test},
+      {:excoveralls, "~> 0.13.0", only: :test}
     ]
   end
 
