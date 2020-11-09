@@ -2,12 +2,16 @@ defmodule DoctorSchedule.Accounts.Entities.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @derive {Phoenix.Param, key: :id}
   schema "users" do
     field :email, :string
     field :first_name, :string
     field :last_name, :string
     field :password_hash, :string
-    field :role, :string
+    field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
+    field :role, :string, default: "user"
 
     timestamps()
   end
@@ -15,7 +19,30 @@ defmodule DoctorSchedule.Accounts.Entities.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:first_name, :last_name, :email, :role, :password_hash])
-    |> validate_required([:first_name, :last_name, :email, :role, :password_hash])
+    |> cast(attrs, [:first_name, :last_name, :email, :role, :password, :password_confirmation])
+    |> validate_required([
+      :first_name,
+      :last_name,
+      :email,
+      :role,
+      :password,
+      :password_confirmation
+    ])
+    |> validate_length(:password,
+      min: 6,
+      max: 100,
+      message: "password should have between 6 to 100 chars"
+    )
+    |> validate_confirmation(:password)
+    |> hash_password()
+    |> unique_constraint(:email)
+    |> validate_format(:email, ~r/@/, message: "hav invalid format please type a valid e-mail")
+    |> update_change(:email, &String.downcase/1)
   end
+
+  defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, Argon2.add_hash(password))
+  end
+
+  defp hash_password(changeset), do: changeset
 end
