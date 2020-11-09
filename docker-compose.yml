@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.dev
     command: /bin/sh docker_dev_start.sh
     ports:
-      - "8080:4000"
+      - "8081:4000"
     depends_on:
       - db
     links:
