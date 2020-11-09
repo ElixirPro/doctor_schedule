@@ -17,13 +17,14 @@ defmodule DoctorScheduleWeb.Router do
   scope "/", DoctorScheduleWeb do
     pipe_through :browser
 
+    resources "/users", UserController
     live "/", PageLive, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", DoctorScheduleWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", DoctorScheduleWeb.Api, as: :api do
+    pipe_through :api
+    resources "/users", UserController
+  end
 
   # Enables LiveDashboard only for development
   #
