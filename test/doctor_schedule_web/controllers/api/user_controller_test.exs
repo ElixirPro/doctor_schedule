@@ -4,24 +4,10 @@ defmodule DoctorScheduleWeb.Api.UserControllerTest do
   alias DoctorSchedule.Accounts.Repositories.AccountsRepository
   alias DoctorSchedule.Accounts.Entities.User
 
-  @create_attrs %{
-    email: "some email",
-    first_name: "some first_name",
-    last_name: "some last_name",
-    password_hash: "some password_hash",
-    role: "some role"
-  }
-  @update_attrs %{
-    email: "some updated email",
-    first_name: "some updated first_name",
-    last_name: "some updated last_name",
-    password_hash: "some updated password_hash",
-    role: "some updated role"
-  }
-  @invalid_attrs %{email: nil, first_name: nil, last_name: nil, password_hash: nil, role: nil}
+  alias DoctorSchedule.UserFixture
 
   def fixture(:user) do
-    {:ok, user} = AccountsRepository.create_user(@create_attrs)
+    {:ok, user} = AccountsRepository.create_user(UserFixture.valid_attrs())
     user
   end
 
@@ -32,29 +18,28 @@ defmodule DoctorScheduleWeb.Api.UserControllerTest do
   describe "index" do
     test "lists all users", %{conn: conn} do
       conn = get(conn, Routes.api_user_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200) == []
     end
   end
 
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.api_user_path(conn, :create), user: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+      conn = post(conn, Routes.api_user_path(conn, :create), user: UserFixture.valid_attrs())
+      assert %{"id" => id} = json_response(conn, 201)
 
       conn = get(conn, Routes.api_user_path(conn, :show, id))
 
       assert %{
-               "id" => id,
-               "email" => "some email",
+               "email" => "test@test",
                "first_name" => "some first_name",
+               "id" => id,
                "last_name" => "some last_name",
-               "password_hash" => "some password_hash",
-               "role" => "some role"
-             } = json_response(conn, 200)["data"]
+               "role" => "user"
+             } = json_response(conn, 200)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.api_user_path(conn, :create), user: @invalid_attrs)
+      conn = post(conn, Routes.api_user_path(conn, :create), user: UserFixture.invalid_attrs())
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -63,23 +48,26 @@ defmodule DoctorScheduleWeb.Api.UserControllerTest do
     setup [:create_user]
 
     test "renders user when data is valid", %{conn: conn, user: %User{id: id} = user} do
-      conn = put(conn, Routes.api_user_path(conn, :update, user), user: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+      conn =
+        put(conn, Routes.api_user_path(conn, :update, user), user: UserFixture.update_attrs())
+
+      assert %{"id" => ^id} = json_response(conn, 200)
 
       conn = get(conn, Routes.api_user_path(conn, :show, id))
 
       assert %{
+               "email" => "test@test",
+               "first_name" => "update",
                "id" => id,
-               "email" => "some updated email",
-               "first_name" => "some updated first_name",
-               "last_name" => "some updated last_name",
-               "password_hash" => "some updated password_hash",
-               "role" => "some updated role"
-             } = json_response(conn, 200)["data"]
+               "last_name" => "update last name",
+               "role" => "user"
+             } = json_response(conn, 200)
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
-      conn = put(conn, Routes.api_user_path(conn, :update, user), user: @invalid_attrs)
+      conn =
+        put(conn, Routes.api_user_path(conn, :update, user), user: UserFixture.invalid_attrs())
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
