@@ -1,14 +1,14 @@
 defmodule DoctorScheduleWeb.UserControllerTest do
   use DoctorScheduleWeb.ConnCase
 
-  alias DoctorSchedule.Accounts
+  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
 
   @create_attrs %{email: "some email", first_name: "some first_name", last_name: "some last_name", password_hash: "some password_hash", role: "some role"}
   @update_attrs %{email: "some updated email", first_name: "some updated first_name", last_name: "some updated last_name", password_hash: "some updated password_hash", role: "some updated role"}
   @invalid_attrs %{email: nil, first_name: nil, last_name: nil, password_hash: nil, role: nil}
 
   def fixture(:user) do
-    {:ok, user} = Accounts.create_user(@create_attrs)
+    {:ok, user} = AccountsRepository.create_user(@create_attrs)
     user
   end
 

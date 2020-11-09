@@ -1,8 +1,8 @@
 defmodule DoctorScheduleWeb.Api.UserControllerTest do
   use DoctorScheduleWeb.ConnCase
 
-  alias DoctorSchedule.Accounts
-  alias DoctorSchedule.Accounts.User
+  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
+  alias DoctorSchedule.Accounts.Entities.User
 
   @create_attrs %{
     email: "some email",
@@ -21,7 +21,7 @@ defmodule DoctorScheduleWeb.Api.UserControllerTest do
   @invalid_attrs %{email: nil, first_name: nil, last_name: nil, password_hash: nil, role: nil}
 
   def fixture(:user) do
-    {:ok, user} = Accounts.create_user(@create_attrs)
+    {:ok, user} = AccountsRepository.create_user(@create_attrs)
     user
   end
 
