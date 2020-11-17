@@ -10,6 +10,10 @@ defmodule DoctorScheduleWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :auth do
+    plug DoctorScheduleWeb.Auth.Pipeline
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -21,10 +25,18 @@ defmodule DoctorScheduleWeb.Router do
     live "/", PageLive, :index
   end
 
+
+
+  scope "/api", DoctorScheduleWeb.Api, as: :api do
+    pipe_through [:api, :auth]
+
+    resources "/users", UserController, except: [:create]
+  end
+
   scope "/api", DoctorScheduleWeb.Api, as: :api do
     pipe_through :api
     resources "/sessions", SessionController
-    resources "/users", UserController
+    resources "/users", UserController, only: [:create]
   end
 
   # Enables LiveDashboard only for development
