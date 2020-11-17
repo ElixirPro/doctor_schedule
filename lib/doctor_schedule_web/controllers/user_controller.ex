@@ -1,8 +1,8 @@
 defmodule DoctorScheduleWeb.UserController do
   use DoctorScheduleWeb, :controller
 
-  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
   alias DoctorSchedule.Accounts.Entities.User
+  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
 
   def index(conn, _params) do
     users = AccountsRepository.list_users()

@@ -1,8 +1,8 @@
 defmodule DoctorScheduleWeb.Api.UserControllerTest do
   use DoctorScheduleWeb.ConnCase
 
-  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
   alias DoctorSchedule.Accounts.Entities.User
+  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
 
   alias DoctorSchedule.UserFixture
 

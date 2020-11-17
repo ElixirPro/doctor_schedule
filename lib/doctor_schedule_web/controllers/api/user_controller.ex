@@ -1,8 +1,8 @@
 defmodule DoctorScheduleWeb.Api.UserController do
   use DoctorScheduleWeb, :controller
 
-  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
   alias DoctorSchedule.Accounts.Entities.User
+  alias DoctorSchedule.Accounts.Repositories.AccountsRepository
 
   action_fallback DoctorScheduleWeb.FallbackController
 

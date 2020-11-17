@@ -6,7 +6,6 @@ defmodule DoctorScheduleWeb.FallbackController do
   """
   use DoctorScheduleWeb, :controller
 
-
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)

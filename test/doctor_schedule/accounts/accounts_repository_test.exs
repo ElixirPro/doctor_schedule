@@ -52,7 +52,10 @@ defmodule DoctorSchedule.Accounts.Repositories.AccountsRepositoryTest do
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
-      assert {:error, %Ecto.Changeset{}} = AccountsRepository.update_user(user, UserFixture.invalid_attrs())
+
+      assert {:error, %Ecto.Changeset{}} =
+               AccountsRepository.update_user(user, UserFixture.invalid_attrs())
+
       assert user.email == AccountsRepository.get_user!(user.id).email
     end
 
