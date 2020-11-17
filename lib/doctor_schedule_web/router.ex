@@ -46,6 +46,7 @@ defmodule DoctorScheduleWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
+  # coveralls-ignore-start
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
@@ -54,4 +55,5 @@ defmodule DoctorScheduleWeb.Router do
       live_dashboard "/dashboard", metrics: DoctorScheduleWeb.Telemetry
     end
   end
+  # coveralls-ignore-stop
 end

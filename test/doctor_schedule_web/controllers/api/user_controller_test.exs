@@ -6,19 +6,36 @@ defmodule DoctorScheduleWeb.Api.UserControllerTest do
 
   alias DoctorSchedule.UserFixture
 
+  import DoctorScheduleWeb.Auth.Guardian
+
   def fixture(:user) do
     {:ok, user} = AccountsRepository.create_user(UserFixture.valid_attrs())
     user
   end
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, user} = %{
+      email: "adm@test",
+      first_name: "some first_name",
+      last_name: "some last_name",
+      password: "123123",
+      password_confirmation: "123123"
+    }
+    |> AccountsRepository.create_user()
+
+    {:ok, token, _claims} = encode_and_sign(user, %{}, token_type: :access)
+
+    {:ok, conn:
+    conn
+    |> put_req_header("accept", "application/json")
+    |> put_req_header("authorization", "bearer " <> token)
+  }
   end
 
   describe "index" do
     test "lists all users", %{conn: conn} do
       conn = get(conn, Routes.api_user_path(conn, :index))
-      assert json_response(conn, 200) == []
+      assert json_response(conn, 200) |> Enum.count() == 1
     end
   end
 
