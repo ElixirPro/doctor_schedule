@@ -10,6 +10,10 @@ defmodule DoctorScheduleWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :auth do
+    plug DoctorScheduleWeb.Auth.Pipeline
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -17,13 +21,21 @@ defmodule DoctorScheduleWeb.Router do
   scope "/", DoctorScheduleWeb do
     pipe_through :browser
 
+    resources "/users", UserController
     live "/", PageLive, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", DoctorScheduleWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", DoctorScheduleWeb.Api, as: :api do
+    pipe_through [:api, :auth]
+
+    resources "/users", UserController, except: [:create]
+  end
+
+  scope "/api", DoctorScheduleWeb.Api, as: :api do
+    pipe_through :api
+    resources "/sessions", SessionController
+    resources "/users", UserController, only: [:create]
+  end
 
   # Enables LiveDashboard only for development
   #
@@ -32,6 +44,7 @@ defmodule DoctorScheduleWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
+  # coveralls-ignore-start
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
@@ -40,4 +53,6 @@ defmodule DoctorScheduleWeb.Router do
       live_dashboard "/dashboard", metrics: DoctorScheduleWeb.Telemetry
     end
   end
+
+  # coveralls-ignore-stop
 end

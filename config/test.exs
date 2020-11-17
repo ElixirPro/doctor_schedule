@@ -18,5 +18,9 @@ config :doctor_schedule, DoctorScheduleWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :doctor_schedule, DoctorScheduleWeb.Auth.Guardian,
+  issuer: "doctor_schedule",
+  secret_key: "12312323"
+
 # Print only warnings and errors during test
 config :logger, level: :warn
