@@ -23,7 +23,6 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-
 config :doctor_schedule, DoctorScheduleWeb.Auth.Guardian,
   issuer: "doctor_schedule",
   secret_key: System.get_env("GUARDIAN_KEY")

@@ -14,7 +14,6 @@ defmodule DoctorSchedule.Accounts.Services.SessionServiceTest do
     user
   end
 
-
   test "execute/2 should return an user" do
     user = user_fixture()
     {:ok, auth_user} = SessionService.execute("test@test", "123123")
@@ -29,5 +28,4 @@ defmodule DoctorSchedule.Accounts.Services.SessionServiceTest do
   test "execute/2 not found return" do
     assert {:error, :not_found} == SessionService.execute("test@fdfdfd", "12312")
   end
-
 end

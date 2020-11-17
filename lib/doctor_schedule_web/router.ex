@@ -25,8 +25,6 @@ defmodule DoctorScheduleWeb.Router do
     live "/", PageLive, :index
   end
 
-
-
   scope "/api", DoctorScheduleWeb.Api, as: :api do
     pipe_through [:api, :auth]
 
@@ -55,5 +53,6 @@ defmodule DoctorScheduleWeb.Router do
       live_dashboard "/dashboard", metrics: DoctorScheduleWeb.Telemetry
     end
   end
+
   # coveralls-ignore-stop
 end

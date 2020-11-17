@@ -17,6 +17,7 @@ defmodule DoctorScheduleWeb.FallbackController do
     conn
     |> put_status(:bad_request)
     |> json(%{message: message})
+
     # |> put_view(DoctorScheduleWeb.ErrorView)
     # |> render(:"404")
   end

@@ -14,22 +14,23 @@ defmodule DoctorScheduleWeb.Api.UserControllerTest do
   end
 
   setup %{conn: conn} do
-    {:ok, user} = %{
-      email: "adm@test",
-      first_name: "some first_name",
-      last_name: "some last_name",
-      password: "123123",
-      password_confirmation: "123123"
-    }
-    |> AccountsRepository.create_user()
+    {:ok, user} =
+      %{
+        email: "adm@test",
+        first_name: "some first_name",
+        last_name: "some last_name",
+        password: "123123",
+        password_confirmation: "123123"
+      }
+      |> AccountsRepository.create_user()
 
     {:ok, token, _claims} = encode_and_sign(user, %{}, token_type: :access)
 
-    {:ok, conn:
-    conn
-    |> put_req_header("accept", "application/json")
-    |> put_req_header("authorization", "bearer " <> token)
-  }
+    {:ok,
+     conn:
+       conn
+       |> put_req_header("accept", "application/json")
+       |> put_req_header("authorization", "bearer " <> token)}
   end
 
   describe "index" do
