@@ -74,3 +74,17 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :doctor_schedule, DoctorSchedule.Accounts.Services.SendForgotPasswordToEmail,
+  adapter: Bamboo.SMTPAdapter,
+  server: System.get_env("SMTP_HOST"),
+  hostname: System.get_env("SMTP_HOST"),
+  port: System.get_env("SMTP_PORT"),
+  username: System.get_env("SMTP_USER"),
+  password: System.get_env("SMTP_PASSWORD"),
+  tls: :if_available,
+  allowed_tls_versions: [:tlsv1, :"tlsv1.1", :"tlsv1.2"],
+  ssl: false,
+  retries: 1,
+  no_mx_lookups: false,
+  auth: :if_available
