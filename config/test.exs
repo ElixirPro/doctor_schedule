@@ -24,3 +24,7 @@ config :doctor_schedule, DoctorScheduleWeb.Auth.Guardian,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :doctor_schedule,
+       DoctorSchedule.Accounts.Services.SendForgotPasswordToEmail,
+       adapter: Bamboo.TestAdapter
