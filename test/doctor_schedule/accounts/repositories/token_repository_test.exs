@@ -6,7 +6,6 @@ defmodule DoctorSchedule.Accounts.Repositories.TokenRepositoryTest do
   alias DoctorSchedule.UserFixture
 
   describe "users" do
-
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
         attrs
@@ -32,6 +31,5 @@ defmodule DoctorSchedule.Accounts.Repositories.TokenRepositoryTest do
     test "generate/1 should return error" do
       assert {:error, "User does not exist"} == TokenRepository.generate("sdf@12sdfsd")
     end
-
   end
 end

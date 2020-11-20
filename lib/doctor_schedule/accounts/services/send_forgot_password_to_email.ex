@@ -5,11 +5,13 @@ defmodule DoctorSchedule.Accounts.Services.SendForgotPasswordToEmail do
   import Bamboo.Email
 
   alias DoctorSchedule.Accounts.Repositories.TokenRepository
+
   def execute(email) do
     email
     |> TokenRepository.generate()
     |> case do
-      {:error, msg} -> {:error, msg}
+      {:error, msg} ->
+        {:error, msg}
 
       {:ok, token, user} ->
         {:ok, token, user, send_email(token, user)}
@@ -18,6 +20,7 @@ defmodule DoctorSchedule.Accounts.Services.SendForgotPasswordToEmail do
 
   defp send_email(token, user) do
     url = "http://localhost:4000/reset-password/#{token}"
+
     new_email()
     |> from({"Doctor Schedule Team", "adm@doctorschedule.com"})
     |> to({user.first_name, user.email})

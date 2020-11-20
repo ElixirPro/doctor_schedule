@@ -1,7 +1,6 @@
 defmodule DoctorScheduleWeb.Api.PasswordController do
   use DoctorScheduleWeb, :controller
 
-
   alias DoctorSchedule.Accounts.Services.SendForgotPasswordToEmail
   action_fallback DoctorScheduleWeb.FallbackController
 

@@ -11,7 +11,8 @@ defmodule DoctorSchedule.Accounts.Services.ResetPasswordService do
     token
     |> TokenRepository.get_by_token()
     |> case do
-      nil -> {:error, "Token does not exist"}
+      nil ->
+        {:error, "Token does not exist"}
 
       user_token ->
         user_token
@@ -20,8 +21,11 @@ defmodule DoctorSchedule.Accounts.Services.ResetPasswordService do
           true ->
             user_token.user
             |> AccountsRepository.update_user(data)
+
             {:ok, "Password has updated!"}
-          false -> {:error, "Token has expired!"}
+
+          false ->
+            {:error, "Token has expired!"}
         end
     end
   end
@@ -35,6 +39,4 @@ defmodule DoctorSchedule.Accounts.Services.ResetPasswordService do
     valid_period = token_inserted.hour + @token_time
     DateTime.utc_now().hour < valid_period
   end
-
-
 end

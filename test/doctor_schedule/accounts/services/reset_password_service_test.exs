@@ -24,10 +24,12 @@ defmodule DoctorSchedule.Accounts.Services.ResetPasswordServiceTest do
     future_date = %{now | hour: now.hour + 5}
 
     with_mock DateTime, utc_now: fn -> future_date end do
-      {:error, msg} = ResetPasswordService.execute(token, %{
-        password: "121212",
-        password_confirmation: "121212"
-      })
+      {:error, msg} =
+        ResetPasswordService.execute(token, %{
+          password: "121212",
+          password_confirmation: "121212"
+        })
+
       assert "Token has expired!" == msg
     end
   end
@@ -36,19 +38,22 @@ defmodule DoctorSchedule.Accounts.Services.ResetPasswordServiceTest do
     user = user_fixture()
     {:ok, token, _} = TokenRepository.generate(user.email)
 
-    {:ok, msg} = ResetPasswordService.execute(token, %{
-      password: "121212",
-      password_confirmation: "121212"
-    })
+    {:ok, msg} =
+      ResetPasswordService.execute(token, %{
+        password: "121212",
+        password_confirmation: "121212"
+      })
+
     assert "Password has updated!" == msg
   end
 
   test "execute/2 token does not exist" do
-    {:error, msg} = ResetPasswordService.execute("2ed1fac2-4de4-4a10-a2a5-96e201b3002e", %{
-      password: "121212",
-      password_confirmation: "121212"
-    })
+    {:error, msg} =
+      ResetPasswordService.execute("2ed1fac2-4de4-4a10-a2a5-96e201b3002e", %{
+        password: "121212",
+        password_confirmation: "121212"
+      })
+
     assert "Token does not exist" == msg
   end
-
 end
